@@ -3,6 +3,7 @@ module github.com/Ackites/KillWxapkg
 go 1.23
 
 require (
+	github.com/dablelv/cyan v0.0.54
 	github.com/ditashi/jsbeautifier-go v0.0.0-20141206144643-2520a8026a9c
 	github.com/dop251/goja v0.0.0-20240822155948-fa6d1ed5e4b6
 	github.com/fsnotify/fsnotify v1.7.0

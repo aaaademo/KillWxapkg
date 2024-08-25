@@ -68,7 +68,7 @@ func main() {
 		return
 	}
 
-	if appID == "" || input == "" {
+	if appID == "" {
 		fmt.Println("使用方法: program -id=<AppID> -in=<输入文件1,输入文件2> 或 -in=<输入目录> -out=<输出目录> [-ext=<文件后缀>] [-restore] [-pretty] [-noClean] [-hook] [-save] [-repack=<输入目录>] [-watch] [-sensitive]")
 		flag.PrintDefaults()
 		fmt.Println()

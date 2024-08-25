@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"runtime"
+	fileutils "github.com/dablelv/cyan/file"
 
 	"github.com/Ackites/KillWxapkg/internal/restore"
 	"github.com/Ackites/KillWxapkg/internal/util"
@@ -16,17 +18,40 @@ import (
 	"github.com/Ackites/KillWxapkg/internal/unpack"
 )
 
+var (
+	InputDir string
+)
+
+// 设置默认inputDir配置
+func SetDefaultInput(appID string) (string) {
+	if appID == "" {
+		return ""
+	}
+	// 获取当前系统为 darwin 还是 windows
+	system := runtime.GOOS
+	// 设置默认的inputDir
+	if system == "windows" {
+		InputDir = fmt.Sprintf("C:\\Users\\%s\\Documents\\WeChat' 'Files\\Applet\\%s\\", os.Getenv("USERNAME"), appID)
+	}
+	if system == "darwin" {
+		InputDir = fmt.Sprintf("/Users/%s/Library/Containers/com.tencent.xinWeChat/Data/.wxapplet/packages/%s/", os.Getenv("USER"), appID)
+	} else {
+		return ""
+	}
+	return InputDir
+}
+
 // ParseInput 解析输入文件
 func ParseInput(input, fileExt string) []string {
 	var inputFiles []string
 	if fileInfo, err := os.Stat(input); err == nil && fileInfo.IsDir() {
-		files, err := os.ReadDir(input)
+		files, err := fileutils.ListDirEntryPaths(input,false)
 		if err != nil {
 			log.Fatalf("读取输入目录失败: %v", err)
 		}
-		for _, file := range files {
-			if !file.IsDir() && strings.HasSuffix(file.Name(), fileExt) {
-				inputFiles = append(inputFiles, filepath.Join(input, file.Name()))
+		for _, rfile := range files {
+			if strings.HasSuffix(rfile, fileExt) {
+				inputFiles = append(inputFiles, rfile)
 			}
 		}
 	} else {

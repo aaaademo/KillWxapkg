@@ -22,6 +22,17 @@ func Execute(appID, input, outputDir, fileExt string, restoreDir bool, pretty bo
 	configManager.Set("save", save)
 	configManager.Set("sensitive", sensitive)
 
+	if input == "" {
+		// input 等于 默认值 加上 appID
+		input = SetDefaultInput(appID)
+		// 提示 设置 默认路径发生错误，并结束程序
+		if input == "" {
+			log.Println("未设置输入路径，请设置后重试")
+			return
+		}
+	}
+
+
 	inputFiles := ParseInput(input, fileExt)
 
 	if len(inputFiles) == 0 {

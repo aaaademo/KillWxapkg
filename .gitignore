@@ -200,3 +200,6 @@ go.work
 
 dist/
 .idea/
+.DS_Store
+KillWxapkg
+config/
