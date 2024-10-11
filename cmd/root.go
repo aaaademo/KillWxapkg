@@ -10,6 +10,7 @@ import (
 )
 
 func Execute(appID, input, outputDir, fileExt string, restoreDir bool, pretty bool, noClean bool, save bool, sensitive bool) {
+	log.Println("开始处理AppID：", appID)
 	// 存储配置
 	configManager := NewSharedConfigManager()
 	configManager.Set("appID", appID)
@@ -42,7 +43,8 @@ func Execute(appID, input, outputDir, fileExt string, restoreDir bool, pretty bo
 
 	// 确定输出目录
 	if outputDir == "" {
-		outputDir = DetermineOutputDir(input, appID)
+		// outputDir = DetermineOutputDir(input, appID)
+		outputDir = "outputs/"+ appID
 	}
 
 	var wg sync.WaitGroup

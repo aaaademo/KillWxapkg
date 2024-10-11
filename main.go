@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
 
 	"github.com/Ackites/KillWxapkg/internal/pack"
 
@@ -12,6 +15,7 @@ import (
 
 var (
 	appID      string
+	appIDList      string
 	input      string
 	outputDir  string
 	fileExt    string
@@ -27,6 +31,7 @@ var (
 
 func init() {
 	flag.StringVar(&appID, "id", "", "微信小程序的AppID")
+	flag.StringVar(&appIDList, "idf", "", "微信小程序的AppID列表文件")
 	flag.StringVar(&input, "in", "", "输入文件路径（多个文件用逗号分隔）或输入目录路径")
 	flag.StringVar(&outputDir, "out", "", "输出目录路径（如果未指定，则默认保存到输入目录下以AppID命名的文件夹）")
 	flag.StringVar(&fileExt, "ext", ".wxapkg", "处理的文件后缀")
@@ -68,13 +73,36 @@ func main() {
 		return
 	}
 
-	if appID == "" {
-		fmt.Println("使用方法: program -id=<AppID> -in=<输入文件1,输入文件2> 或 -in=<输入目录> -out=<输出目录> [-ext=<文件后缀>] [-restore] [-pretty] [-noClean] [-hook] [-save] [-repack=<输入目录>] [-watch] [-sensitive]")
+	if appID == "" && appIDList == "" {
+		fmt.Println("使用方法: program -id=<AppID> [-idf=<AppIDList>] -in=<输入文件1,输入文件2> 或 -in=<输入目录> -out=<输出目录> [-ext=<文件后缀>] [-restore] [-pretty] [-noClean] [-hook] [-save] [-repack=<输入目录>] [-watch] [-sensitive]")
 		flag.PrintDefaults()
 		fmt.Println()
 		return
 	}
 
-	// 执行命令
-	cmd.Execute(appID, input, outputDir, fileExt, restoreDir, pretty, noClean, save, sensitive)
+	if appID!="" {
+		cmd.Execute(appID, input, outputDir, fileExt, restoreDir, pretty, noClean, save, sensitive)
+	} else if appIDList != "" {
+		// 遍历文件，逐行获取appid进行解密
+		// 先读取文件内容
+		appIDListFile, err := os.Open(appIDList)
+		if err!= nil {
+			fmt.Println("打开AppID文件失败：", err)
+			return
+		}
+		defer appIDListFile.Close()
+		appIDListContent, err := ioutil.ReadAll(appIDListFile)
+		if err!= nil {
+			fmt.Println("读取AppID文件内容失败：", err)
+			return
+		}
+		// 遍历AppID
+		appIDList := strings.Split(string(appIDListContent), "\n")
+		for _, appID := range appIDList {
+			if appID == "" {
+				continue
+			}
+			cmd.Execute(appID, input, outputDir, fileExt, restoreDir, pretty, noClean, save, sensitive)
+		}
+	}
 }

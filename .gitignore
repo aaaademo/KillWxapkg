@@ -203,3 +203,5 @@ dist/
 .DS_Store
 KillWxapkg
 config/
+outputs/
+*.txt

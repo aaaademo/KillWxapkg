@@ -142,6 +142,9 @@ func ProcessFile(inputFile, outputDir, appID string, save bool) error {
 		return fmt.Errorf("解包失败: %v", err)
 	}
 
+	// 解包输出目录
+	// log.Printf("解包输出目录: %s", outputDir)
+
 	// 设置解包状态
 	info.IsExtracted = true
 
