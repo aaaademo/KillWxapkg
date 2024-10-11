@@ -3,18 +3,18 @@
 > 纯Golang实现，一个用于自动化反编译微信小程序的工具，小程序安全利器，
 > 自动解密，解包，可还原工程目录，支持微信开发者工具运行
 
-[![stable](https://img.shields.io/badge/stable-stable-green.svg)](https://github.com/Ackites/KillWxapkg)
-[![license](https://img.shields.io/github/license/Ackites/KillWxapkg)]()
-[![download](https://img.shields.io/github/downloads/Ackites/KillWxapkg/total)]()
-[![release](https://img.shields.io/github/v/release/Ackites/KillWxapkg)]()
-[![commit](https://img.shields.io/github/last-commit/Ackites/KillWxapkg)]()
-[![issues](https://img.shields.io/github/issues/Ackites/KillWxapkg)]()
-[![pull](https://img.shields.io/github/issues-pr/Ackites/KillWxapkg)]()
-[![fork](https://img.shields.io/github/forks/Ackites/KillWxapkg)]()
-[![star](https://img.shields.io/github/stars/Ackites/KillWxapkg)]()
-[![go](https://img.shields.io/github/go-mod/go-version/Ackites/KillWxapkg)]()
-[![size](https://img.shields.io/github/repo-size/Ackites/KillWxapkg)]()
-[![contributors](https://img.shields.io/github/contributors/Ackites/KillWxapkg)]()
+------------------
+## 更新-2024-10-11
+ - 新增批量导出功能
+ - 更改默认输出目录为当前目录（./output/<appid>）
+
+```
+> [-id=<输入AppID>] [idf=<输入AppID文件>] -in=<输入文件1,输入文件2> 或 -in=<输入目录> -out=<输出目录> 
+
+> idf=appids.txt 
+```
+
+
 ------------------
 ## 声明
 
