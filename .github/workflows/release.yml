@@ -19,9 +19,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install upx
-        run: sudo apt-get install -y upx
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
