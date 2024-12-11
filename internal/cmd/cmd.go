@@ -6,8 +6,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 	"runtime"
+	"strings"
+
 	fileutils "github.com/dablelv/cyan/file"
 
 	"github.com/Ackites/KillWxapkg/internal/restore"
@@ -23,7 +24,7 @@ var (
 )
 
 // 设置默认inputDir配置
-func SetDefaultInput(appID string) (string) {
+func SetDefaultInput(appID string) string {
 	if appID == "" {
 		return ""
 	}
@@ -34,7 +35,23 @@ func SetDefaultInput(appID string) (string) {
 		InputDir = fmt.Sprintf("C:\\Users\\%s\\Documents\\WeChat' 'Files\\Applet\\%s\\", os.Getenv("USERNAME"), appID)
 	}
 	if system == "darwin" {
-		InputDir = fmt.Sprintf("/Users/%s/Library/Containers/com.tencent.xinWeChat/Data/.wxapplet/packages/%s/", os.Getenv("USER"), appID)
+		paths := []string{
+			fmt.Sprintf("/Users/%s/.wxapplet/packages/%s/", os.Getenv("USER"), appID),
+			fmt.Sprintf("/Users/%s/Library/Containers/com.tencent.xinWeChat/Data/.wxapplet/packages/%s/", os.Getenv("USER"), appID),
+		}
+		for _, path := range paths {
+			if _, err := os.Stat(path); err == nil {
+				InputDir = path
+				log.Printf("InputDir: %s", InputDir)
+				break
+			}
+		}
+		if InputDir == "" {
+			log.Println("未找到有效的InputDir")
+			//退出程序
+			os.Exit(1)
+		}
+
 	} else {
 		return ""
 	}
@@ -45,7 +62,7 @@ func SetDefaultInput(appID string) (string) {
 func ParseInput(input, fileExt string) []string {
 	var inputFiles []string
 	if fileInfo, err := os.Stat(input); err == nil && fileInfo.IsDir() {
-		files, err := fileutils.ListDirEntryPaths(input,false)
+		files, err := fileutils.ListDirEntryPaths(input, false)
 		if err != nil {
 			log.Fatalf("读取输入目录失败: %v", err)
 		}

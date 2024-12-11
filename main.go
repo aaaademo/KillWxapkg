@@ -15,7 +15,7 @@ import (
 
 var (
 	appID      string
-	appIDList      string
+	appIDList  string
 	input      string
 	outputDir  string
 	fileExt    string
@@ -49,7 +49,8 @@ func main() {
 	// 解析命令行参数
 	flag.Parse()
 
-	banner := `
+	version := "v2.4.1211"
+	banner := fmt.Sprintf(`
  _   __ _ _ _  __      __                 _         
 | | / /(_) | | \ \    / /                | |        
 | |/ /  _| | |  \ \  / /   __  ____ _ ___| | ____ _ 
@@ -57,8 +58,8 @@ func main() {
 | |\  \| | | |    \  /   / /_/ / (_| \__ \   <| | | |
 \_| \_/_|_|_|     \/    \__,_|\__,_|___/_|\_\_| |_|
                                                     
-             Wxapkg Decompiler Tool v2.4.1.1011
-    `
+             Wxapkg Decompiler Tool %s
+    `, version)
 	fmt.Println(banner)
 
 	// 动态调试
@@ -80,19 +81,19 @@ func main() {
 		return
 	}
 
-	if appID!="" {
+	if appID != "" {
 		cmd.Execute(appID, input, outputDir, fileExt, restoreDir, pretty, noClean, save, sensitive)
 	} else if appIDList != "" {
 		// 遍历文件，逐行获取appid进行解密
 		// 先读取文件内容
 		appIDListFile, err := os.Open(appIDList)
-		if err!= nil {
+		if err != nil {
 			fmt.Println("打开AppID文件失败：", err)
 			return
 		}
 		defer appIDListFile.Close()
 		appIDListContent, err := ioutil.ReadAll(appIDListFile)
-		if err!= nil {
+		if err != nil {
 			fmt.Println("读取AppID文件内容失败：", err)
 			return
 		}
