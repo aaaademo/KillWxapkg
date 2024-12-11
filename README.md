@@ -4,6 +4,17 @@
 > 自动解密，解包，可还原工程目录，支持微信开发者工具运行
 
 ------------------
+## 更新-2024-12-11
+ - 更新mac微信小程序位置
+
+```text
+windows:
+    C:\\Users\\%s\\AppData\\Roaming\\WeChat' 'Files\\Applet\\%s\\
+mac: 
+    - "/Users/%s/.wxapplet/packages/%s/"
+    - "/Users/%s/Library/Containers/com.tencent.xinWeChat/Data/.wxapplet/packages/%s/"
+```
+
 ## 更新-2024-10-11
  - 新增批量导出功能
  - 更改默认输出目录为当前目录（./output/<appid>）
